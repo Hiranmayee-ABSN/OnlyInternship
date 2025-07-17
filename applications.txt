@@ -1,0 +1,12 @@
+
+=== NEW APPLICATION ===
+Timestamp: 2025-07-12T12:42:35.265Z
+Name: N/A
+Email: N/A
+Phone: N/A
+Internship ID: N/A
+Cover Letter: N/A
+Resume: N/A
+Skills: N/A
+Experience: N/A
+=====================================

@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recruiter Dashboard - OnlyInternship.in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6a0dad;
+      --primary-dark: #4b0082;
+      --secondary: #f8f9ff;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --info: #17a2b8;
+      --light: #f8f9fa;
+      --dark: #343a40;
+      --white: #ffffff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-300: #dee2e6;
+      --gray-400: #ced4da;
+      --gray-500: #adb5bd;
+      --gray-600: #6c757d;
+      --gray-700: #495057;
+      --gray-800: #343a40;
+      --gray-900: #212529;
+      --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      --shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+      color: var(--gray-800);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+
+
+    /* Main Content */
+    .main-content {
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1.5rem 2rem;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 1rem;
+      background: var(--gray-100);
+      border-radius: 8px;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      padding: 0.5rem 1rem;
+      background: var(--danger);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #c82333;
+      transform: translateY(-1px);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .stat-card.success { border-left-color: var(--success); }
+    .stat-card.warning { border-left-color: var(--warning); }
+    .stat-card.info { border-left-color: var(--info); }
+    .stat-card.danger { border-left-color: var(--danger); }
+
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--white);
+    }
+
+    .stat-icon.success { background: var(--success); }
+    .stat-icon.warning { background: var(--warning); }
+    .stat-icon.info { background: var(--info); }
+    .stat-icon.danger { background: var(--danger); }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      color: var(--gray-600);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .stat-change {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+
+    .stat-change.positive { color: var(--success); }
+    .stat-change.negative { color: var(--danger); }
+
+    /* Content Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: var(--white);
+    }
+
+    .btn-success:hover {
+      background: #218838;
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: var(--dark);
+    }
+
+    .btn-warning:hover {
+      background: #e0a800;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--gray-600);
+      border: 1px solid var(--gray-300);
+    }
+
+    .btn-outline:hover {
+      background: var(--gray-100);
+    }
+
+    /* Table */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .table th {
+      background: var(--gray-100);
+      font-weight: 600;
+      color: var(--gray-700);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .table tbody tr {
+      transition: background 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+      background: var(--gray-100);
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-active {
+      background: rgba(40, 167, 69, 0.1);
+      color: var(--success);
+    }
+
+    .status-pending {
+      background: rgba(255, 193, 7, 0.1);
+      color: var(--warning);
+    }
+
+    .status-closed {
+      background: rgba(108, 117, 125, 0.1);
+      color: var(--gray-600);
+    }
+
+    /* Recent Applications */
+    .application-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--gray-200);
+      transition: background 0.3s ease;
+    }
+
+    .application-item:hover {
+      background: var(--gray-100);
+    }
+
+    .application-item:last-child {
+      border-bottom: none;
+    }
+
+    .application-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .application-content {
+      flex: 1;
+    }
+
+    .application-name {
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 0.25rem;
+    }
+
+    .application-details {
+      font-size: 0.8rem;
+      color: var(--gray-500);
+    }
+
+    .application-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .action-card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .action-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .action-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      color: var(--white);
+      font-size: 1.5rem;
+    }
+
+    .action-title {
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 0.5rem;
+    }
+
+    .action-desc {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: var(--white);
+      margin: 5% auto;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+
+    .close {
+      color: var(--gray-500);
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: var(--gray-700);
+    }
+
+    .modal-body {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--gray-300);
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.1);
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .table-container {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="header-title">Recruiter Dashboard</h1>
+      <div class="header-actions">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">R</div>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <div class="action-card" onclick="showPostInternship()">
+        <div class="action-icon">➕</div>
+        <div class="action-title">Post Internship</div>
+        <div class="action-desc">Create a new internship opportunity</div>
+      </div>
+      <div class="action-card" onclick="showApplications()">
+        <div class="action-icon">📝</div>
+        <div class="action-title">View Applications</div>
+        <div class="action-desc">Review candidate applications</div>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card success">
+        <div class="stat-header">
+          <div>
+            <div class="stat-value" id="activeInternships">12</div>
+            <div class="stat-label">Active Internships</div>
+            <div class="stat-change positive">+3 this month</div>
+          </div>
+          <div class="stat-icon success">💼</div>
+        </div>
+      </div>
+
+      <div class="stat-card info">
+        <div class="stat-header">
+          <div>
+            <div class="stat-value" id="totalApplications">156</div>
+            <div class="stat-label">Total Applications</div>
+            <div class="stat-change positive">+23% from last week</div>
+          </div>
+          <div class="stat-icon info">📝</div>
+        </div>
+      </div>
+
+      <div class="stat-card warning">
+        <div class="stat-header">
+          <div>
+            <div class="stat-value" id="unreadMessages">8</div>
+            <div class="stat-label">Unread Messages</div>
+            <div class="stat-change negative">+2 from yesterday</div>
+          </div>
+          <div class="stat-icon warning">💬</div>
+        </div>
+      </div>
+
+      <div class="stat-card danger">
+        <div class="stat-header">
+          <div>
+            <div class="stat-value" id="pendingReviews">3</div>
+            <div class="stat-label">Pending Reviews</div>
+            <div class="stat-change negative">+1 from today</div>
+          </div>
+          <div class="stat-icon danger">⏳</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+      <!-- Active Internships -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Active Internships</h2>
+          <div class="card-actions">
+            <button class="btn btn-outline" onclick="showAllInternships()">View All</button>
+            <button class="btn btn-primary" onclick="showPostInternship()">Post New</button>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Position</th>
+                <th>Applications</th>
+                <th>Status</th>
+                <th>Posted Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="internshipsTable">
+              <tr>
+                <td><strong>Frontend Developer Intern</strong></td>
+                <td>24 applications</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td>Jan 15, 2024</td>
+                <td>
+                  <button class="btn btn-outline" onclick="viewInternship(1)">View</button>
+                  <button class="btn btn-outline" onclick="editInternship(1)">Edit</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Backend Developer Intern</strong></td>
+                <td>18 applications</td>
+                <td><span class="status-badge status-active">Active</span></td>
+                <td>Jan 12, 2024</td>
+                <td>
+                  <button class="btn btn-outline" onclick="viewInternship(2)">View</button>
+                  <button class="btn btn-outline" onclick="editInternship(2)">Edit</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>UI/UX Design Intern</strong></td>
+                <td>12 applications</td>
+                <td><span class="status-badge status-pending">Pending</span></td>
+                <td>Jan 18, 2024</td>
+                <td>
+                  <button class="btn btn-outline" onclick="viewInternship(3)">View</button>
+                  <button class="btn btn-outline" onclick="editInternship(3)">Edit</button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Data Science Intern</strong></td>
+                <td>8 applications</td>
+                <td><span class="status-badge status-closed">Closed</span></td>
+                <td>Jan 10, 2024</td>
+                <td>
+                  <button class="btn btn-outline" onclick="viewInternship(4)">View</button>
+                  <button class="btn btn-success" onclick="reopenInternship(4)">Reopen</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent Applications -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Recent Applications</h2>
+          <div class="card-actions">
+            <button class="btn btn-primary" onclick="showApplications()">View All Applications</button>
+          </div>
+        </div>
+        <div class="applications-list" id="applicationsList">
+          <div class="application-item">
+            <div class="application-avatar">A</div>
+            <div class="application-content">
+              <div class="application-name">Aisha Patel</div>
+              <div class="application-details">Frontend Developer Intern • 2 hours ago</div>
+            </div>
+            <div class="application-actions">
+              <button class="btn btn-outline" onclick="viewApplication(1)">View</button>
+            </div>
+          </div>
+          <div class="application-item">
+            <div class="application-avatar">R</div>
+            <div class="application-content">
+              <div class="application-name">Rahul Sharma</div>
+              <div class="application-details">Backend Developer Intern • 4 hours ago</div>
+            </div>
+            <div class="application-actions">
+              <button class="btn btn-outline" onclick="viewApplication(2)">View</button>
+            </div>
+          </div>
+          <div class="application-item">
+            <div class="application-avatar">P</div>
+            <div class="application-content">
+              <div class="application-name">Priya Gupta</div>
+              <div class="application-details">UI/UX Design Intern • 6 hours ago</div>
+            </div>
+            <div class="application-actions">
+              <button class="btn btn-outline" onclick="viewApplication(3)">View</button>
+            </div>
+          </div>
+          <div class="application-item">
+            <div class="application-avatar">V</div>
+            <div class="application-content">
+              <div class="application-name">Vikram Singh</div>
+              <div class="application-details">Data Science Intern • 1 day ago</div>
+            </div>
+            <div class="application-actions">
+              <button class="btn btn-outline" onclick="viewApplication(4)">View</button>
+            </div>
+          </div>
+          <div class="application-item">
+            <div class="application-avatar">M</div>
+            <div class="application-content">
+              <div class="application-name">Meera Reddy</div>
+              <div class="application-details">Frontend Developer Intern • 1 day ago</div>
+            </div>
+            <div class="application-actions">
+              <button class="btn btn-outline" onclick="viewApplication(5)">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Post Internship Modal -->
+  <div id="postInternshipModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Post New Internship</h2>
+        <span class="close" onclick="closeModal('postInternshipModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="postInternshipForm">
+          <div class="form-group">
+            <label class="form-label">Position Title</label>
+            <input type="text" class="form-input" id="positionTitle" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Company</label>
+            <input type="text" class="form-input" id="company" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <input type="text" class="form-input" id="location" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Duration</label>
+            <select class="form-input" id="duration" required>
+              <option value="">Select Duration</option>
+              <option value="3 months">3 months</option>
+              <option value="4 months">4 months</option>
+              <option value="5 months">5 months</option>
+              <option value="6 months">6 months</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Stipend</label>
+            <input type="text" class="form-input" id="stipend" placeholder="e.g., $2000/month" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-input" id="description" rows="4" required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Requirements (comma separated)</label>
+            <input type="text" class="form-input" id="requirements" placeholder="e.g., HTML, CSS, JavaScript" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('postInternshipModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitInternship()">Post Internship</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Application Modal -->
+  <div id="viewApplicationModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Application Details</h2>
+        <span class="close" onclick="closeModal('viewApplicationModal')">&times;</span>
+      </div>
+      <div class="modal-body" id="applicationDetails">
+        <!-- Application details will be loaded here -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('viewApplicationModal')">Close</button>
+        <button class="btn btn-success" onclick="approveApplication()">Approve</button>
+        <button class="btn btn-warning" onclick="rejectApplication()">Reject</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check if recruiter is logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      const recruiterEmail = localStorage.getItem('recruiterEmail');
+      const recruiterCompany = localStorage.getItem('recruiterCompany');
+      
+      if (!recruiterEmail) {
+        window.location.href = 'recruiter-login.html';
+        return;
+      }
+
+      // Set user avatar
+      if (recruiterCompany) {
+        document.getElementById('userAvatar').textContent = recruiterCompany.charAt(0).toUpperCase();
+        document.getElementById('company').value = recruiterCompany;
+      } else if (recruiterEmail) {
+        document.getElementById('userAvatar').textContent = recruiterEmail.charAt(0).toUpperCase();
+      } else {
+        document.getElementById('userAvatar').textContent = 'R';
+      }
+
+      // Load dashboard data
+      loadDashboardData();
+    });
+
+    // Navigation functions
+    function showDashboard() {
+      showNotification('Dashboard loaded', 'success');
+    }
+
+    function showPostInternship() {
+      document.getElementById('postInternshipModal').style.display = 'block';
+    }
+
+    function showApplications() {
+      window.location.href = 'view-applications.html';
+    }
+
+    function showMyInternships() {
+      showNotification('My Internships page loaded', 'success');
+    }
+
+    function showAnalytics() {
+      showNotification('Analytics page loaded', 'success');
+    }
+
+    function showSettings() {
+      showNotification('Settings page loaded', 'success');
+    }
+
+    // Modal functions
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+      }
+    }
+
+    // Internship functions
+    function viewInternship(id) {
+      showNotification(`Viewing internship ${id}`, 'info');
+      // Here you would typically load internship details
+    }
+
+    function editInternship(id) {
+      showNotification(`Editing internship ${id}`, 'info');
+      // Here you would typically load internship for editing
+    }
+
+    function reopenInternship(id) {
+      const row = event.target.closest('tr');
+      const statusCell = row.querySelector('td:nth-child(3)');
+      const actionsCell = row.querySelector('td:nth-child(5)');
+      
+      statusCell.innerHTML = '<span class="status-badge status-active">Active</span>';
+      actionsCell.innerHTML = `
+        <button class="btn btn-outline" onclick="viewInternship(${id})">View</button>
+        <button class="btn btn-outline" onclick="editInternship(${id})">Edit</button>
+      `;
+      
+      showNotification('Internship reopened successfully!', 'success');
+    }
+
+    function showAllInternships() {
+      showNotification('Loading all internships...', 'info');
+      // Here you would typically load all internships
+    }
+
+    // Application functions
+    function viewApplication(id) {
+      const applicationDetails = document.getElementById('applicationDetails');
+      applicationDetails.innerHTML = `
+        <div style="margin-bottom: 1rem;">
+          <strong>Applicant:</strong> ${getApplicantName(id)}
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <strong>Position:</strong> ${getPositionName(id)}
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <strong>Email:</strong> ${getApplicantEmail(id)}
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <strong>Phone:</strong> ${getApplicantPhone(id)}
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <strong>Skills:</strong> ${getApplicantSkills(id)}
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <strong>Experience:</strong> ${getApplicantExperience(id)}
+        </div>
+        <div style="margin-bottom: 1rem;">
+          <strong>Cover Letter:</strong>
+          <p style="margin-top: 0.5rem; padding: 1rem; background: var(--gray-100); border-radius: 6px;">
+            ${getCoverLetter(id)}
+          </p>
+        </div>
+      `;
+      
+      document.getElementById('viewApplicationModal').style.display = 'block';
+    }
+
+    function approveApplication() {
+      showNotification('Application approved!', 'success');
+      closeModal('viewApplicationModal');
+    }
+
+    function rejectApplication() {
+      showNotification('Application rejected!', 'error');
+      closeModal('viewApplicationModal');
+    }
+
+    // Helper functions for application data
+    function getApplicantName(id) {
+      const names = ['Aisha Patel', 'Rahul Sharma', 'Priya Gupta', 'Vikram Singh', 'Meera Reddy'];
+      return names[id - 1] || 'Unknown';
+    }
+
+    function getPositionName(id) {
+      const positions = ['Frontend Developer Intern', 'Backend Developer Intern', 'UI/UX Design Intern', 'Data Science Intern', 'Frontend Developer Intern'];
+      return positions[id - 1] || 'Unknown';
+    }
+
+    function getApplicantEmail(id) {
+      const emails = ['aisha.patel@email.com', 'rahul.sharma@email.com', 'priya.gupta@email.com', 'vikram.singh@email.com', 'meera.reddy@email.com'];
+      return emails[id - 1] || 'unknown@email.com';
+    }
+
+    function getApplicantPhone(id) {
+      const phones = ['+91 98765 43210', '+91 91234 56780', '+91 99887 76655', '+91 90012 34567', '+91 88888 88888'];
+      return phones[id - 1] || '+91 00000 00000';
+    }
+
+    function getApplicantSkills(id) {
+      const skills = ['HTML, CSS, JavaScript, React', 'Node.js, Express, MongoDB', 'Figma, Adobe Creative Suite', 'Python, Pandas, NumPy', 'HTML, CSS, JavaScript'];
+      return skills[id - 1] || 'Not specified';
+    }
+
+    function getApplicantExperience(id) {
+      const experience = ['1 year of frontend development', '6 months of backend development', '2 years of design experience', '1 year of data analysis', '8 months of web development'];
+      return experience[id - 1] || 'Not specified';
+    }
+
+    function getCoverLetter(id) {
+      const coverLetters = [
+        'I am passionate about frontend development and have worked on several projects using React. I believe this internship will help me grow my skills further.',
+        'I have experience with Node.js and MongoDB, and I am excited to learn more about backend development through this internship.',
+        'As a UI/UX designer, I have created user-friendly interfaces for various applications. I am eager to contribute to your design team.',
+        'I have a strong foundation in data science and machine learning. This internship will help me apply my knowledge in real-world projects.',
+        'I am a quick learner with experience in web development. I am excited about the opportunity to work with your team.'
+      ];
+      return coverLetters[id - 1] || 'Cover letter not available';
+    }
+
+    // Submit internship function
+    function submitInternship() {
+      const form = document.getElementById('postInternshipForm');
+      const formData = new FormData(form);
+      
+      // Validate form
+      if (!formData.get('positionTitle') || !formData.get('company') || !formData.get('location')) {
+        showNotification('Please fill in all required fields', 'error');
+        return;
+      }
+
+      // Simulate API call
+      setTimeout(() => {
+        showNotification('Internship posted successfully!', 'success');
+        closeModal('postInternshipModal');
+        form.reset();
+        
+        // Update stats
+        const activeInternships = document.getElementById('activeInternships');
+        activeInternships.textContent = parseInt(activeInternships.textContent) + 1;
+      }, 1000);
+    }
+
+    // Load dashboard data
+    function loadDashboardData() {
+      // Simulate loading data from API
+      setTimeout(() => {
+        showNotification('Dashboard data loaded', 'success');
+      }, 500);
+    }
+
+    // Logout function
+    async function logout() {
+      try {
+        const sessionToken = localStorage.getItem('recruiterSessionToken');
+        
+        if (sessionToken) {
+          // Call logout API
+          await fetch('/api/recruiter/logout', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${sessionToken}`,
+              'Content-Type': 'application/json',
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Logout error:', error);
+      } finally {
+        // Clear all localStorage
+        localStorage.removeItem('recruiterSessionToken');
+        localStorage.removeItem('recruiterEmail');
+        localStorage.removeItem('recruiterName');
+        localStorage.removeItem('recruiterCompany');
+        localStorage.removeItem('recruiterLoggedIn');
+        
+        // Redirect to login
+        window.location.href = 'recruiter-login.html';
+      }
+    }
+
+    // Check authentication on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const sessionToken = localStorage.getItem('recruiterSessionToken');
+      const isLoggedIn = localStorage.getItem('recruiterLoggedIn');
+      
+      if (!sessionToken || !isLoggedIn) {
+        window.location.href = 'recruiter-login.html';
+        return;
+      }
+      
+      // Verify session with server
+      fetch('/api/recruiter/profile', {
+        headers: {
+          'Authorization': `Bearer ${sessionToken}`,
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.success) {
+          // Session invalid, redirect to login
+          localStorage.clear();
+          window.location.href = 'recruiter-login.html';
+        } else {
+          // Update user info in header
+          const userInfo = document.querySelector('.user-info');
+          if (userInfo) {
+            const nameElement = userInfo.querySelector('.user-name');
+            if (nameElement) {
+              nameElement.textContent = data.recruiter.name;
+            }
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Authentication check failed:', error);
+        localStorage.clear();
+        window.location.href = 'recruiter-login.html';
+      });
+    });
+
+    // Show notification
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        color: white;
+        font-weight: 500;
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+      `;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      // Animate in
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 100);
+      
+      // Remove after 3 seconds
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          if (document.body.contains(notification)) {
+            document.body.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

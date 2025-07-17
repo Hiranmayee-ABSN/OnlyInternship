@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recruiter Signup - OnlyInternship.in</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f3e5f5, #ede7f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-box {
+      background: white;
+      padding: 3rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(106, 13, 173, 0.15);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-box h2 {
+      margin-bottom: 1.5rem;
+      color: #6a0dad;
+    }
+
+    .login-box form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .login-box input {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 1.8px solid #d1c4e9;
+      border-radius: 8px;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .login-box input:focus {
+      border-color: #6a0dad;
+      box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.2);
+    }
+
+    .login-box button {
+      background: #6a0dad;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .login-box button:hover {
+      background: #4b0082;
+    }
+
+    .login-text {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .login-text a {
+      color: #6a0dad;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 500px) {
+      .login-box {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Recruiter Signup</h2>
+    <form id="signupForm">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="text" id="company" placeholder="Company Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit" id="submitBtn">Signup</button>
+    </form>
+    <p class="login-text">Already have an account? <a href="recruiter-login.html">Login</a></p>
+  </div>
+
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById("submitBtn");
+      const originalText = submitBtn.textContent;
+      
+      // Show loading state
+      submitBtn.textContent = "Signing up...";
+      submitBtn.disabled = true;
+      
+      try {
+        const name = document.getElementById("name").value;
+        const company = document.getElementById("company").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        // Make API call to register
+        const response = await fetch('/api/recruiter/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            company,
+            email,
+            password
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          alert("Signup successful! Please log in.");
+          window.location.href = "recruiter-login.html";
+        } else {
+          alert("Signup failed: " + result.error);
+        }
+      } catch (error) {
+        console.error('Signup error:', error);
+        alert("Signup failed. Please try again.");
+      } finally {
+        // Reset button state
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

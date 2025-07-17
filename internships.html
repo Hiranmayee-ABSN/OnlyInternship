@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Internships - OnlyInternship.in</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f6fb;
+      color: #333;
+    }
+
+    .navbar {
+      background-color: #6a0dad;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background: white;
+      color: #333;
+      list-style: none;
+      padding: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+      top: 100%;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu li a {
+      color: #6a0dad;
+      padding: 0.5rem 1rem;
+      display: block;
+    }
+
+    .internship-search {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .internship-search input {
+      width: 90%;
+      max-width: 400px;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 2px solid #6a0dad;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .internship-listing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .internship-card {
+      background: white;
+      width: 100%;
+      max-width: 600px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(106, 13, 173, 0.08);
+      border-left: 5px solid #6a0dad;
+      transition: 0.2s ease;
+    }
+
+    .internship-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(106, 13, 173, 0.2);
+    }
+
+    .internship-card h3 {
+      color: #6a0dad;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .internship-card p {
+      margin: 0.3rem 0;
+      font-size: 0.95rem;
+    }
+
+    .internship-card a button {
+      margin-top: 1rem;
+      background: #6a0dad;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .internship-card a button:hover {
+      background: #4b0082;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #6a0dad;
+      font-size: 1.2rem;
+    }
+
+    .error {
+      text-align: center;
+      padding: 2rem;
+      color: #d32f2f;
+      font-size: 1.1rem;
+    }
+
+    .no-internships {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">OnlyInternship.in</div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="internships.html">Internships</a></li>
+        <li class="dropdown">
+          <a href="#">Login ▼</a>
+          <ul class="dropdown-menu">
+            <li><a href="recruiter-login.html">Recruiter</a></li>
+            <li><a href="admin-login.html">Admin</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Search Box -->
+  <section class="internship-search">
+    <input type="text" id="searchInput" placeholder="🔍 Search internships..." onkeyup="filterInternships()" />
+  </section>
+
+  <!-- Internship Listings -->
+  <section class="internship-listing" id="internshipList">
+    <div class="loading">Loading internships...</div>
+  </section>
+
+  <!-- JavaScript: Load and Filter Internships -->
+  <script>
+    // Set your backend URL here
+    const API_BASE = window.location.hostname.includes('localhost')
+      ? ''
+      : 'https://your-backend-url.com'; // <-- Replace with your deployed backend URL
+
+    // Load internships from API
+    async function loadInternships() {
+      try {
+        const response = await fetch(`${API_BASE}/api/internships`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch internships');
+        }
+        
+        const internships = await response.json();
+        displayInternships(internships);
+      } catch (error) {
+        console.error('Error loading internships:', error);
+        document.getElementById('internshipList').innerHTML = 
+          '<div class="error">Failed to load internships. Please try again later.</div>';
+      }
+    }
+
+    // Display internships in the DOM
+    function displayInternships(internships) {
+      const container = document.getElementById('internshipList');
+      
+      if (!internships || internships.length === 0) {
+        container.innerHTML = '<div class="no-internships">No internships available at the moment.</div>';
+        return;
+      }
+
+      const internshipsHTML = internships.map(internship => `
+        <div class="internship-card">
+          <h3>${getEmoji(internship.title)} ${internship.title}</h3>
+          <p><strong>Company:</strong> ${internship.company}</p>
+          <p><strong>Location:</strong> ${internship.location}</p>
+          <p><strong>Description:</strong> ${internship.description}</p>
+          <p><strong>Requirements:</strong> ${internship.requirements.join(', ')}</p>
+          <p><strong>Duration:</strong> ${internship.duration}</p>
+          <p><strong>Stipend:</strong> ${internship.stipend}</p>
+          <p><strong>Posted:</strong> ${formatDate(internship.postedDate)}</p>
+          <a href="apply.html?position=${encodeURIComponent(internship.title)}&id=${internship.id}">
+            <button>Apply</button>
+          </a>
+        </div>
+      `).join('');
+
+      container.innerHTML = internshipsHTML;
+    }
+
+    // Get appropriate emoji based on internship title
+    function getEmoji(title) {
+      const lowerTitle = title.toLowerCase();
+      if (lowerTitle.includes('frontend') || lowerTitle.includes('web')) return '🌐';
+      if (lowerTitle.includes('backend') || lowerTitle.includes('software')) return '⚙️';
+      if (lowerTitle.includes('mobile') || lowerTitle.includes('app')) return '📱';
+      if (lowerTitle.includes('design') || lowerTitle.includes('ui/ux')) return '🎨';
+      if (lowerTitle.includes('data') || lowerTitle.includes('ai')) return '🧠';
+      if (lowerTitle.includes('hr') || lowerTitle.includes('human')) return '👥';
+      return '💼';
+    }
+
+    // Format date for display
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    // Filter internships based on search input
+    function filterInternships() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const cards = document.querySelectorAll(".internship-card");
+      
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(input) ? "block" : "none";
+      });
+    }
+
+    // Load internships when page loads
+    document.addEventListener('DOMContentLoaded', loadInternships);
+  </script>
+
+</body>
+</html>

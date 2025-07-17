@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "title": "Frontend Developer Intern",
+    "company": "TechCorp Solutions",
+    "location": "Remote",
+    "duration": "3 months",
+    "stipend": "$2000/month",
+    "description": "Join our frontend team to build responsive web applications using React, HTML, CSS, and JavaScript.",
+    "requirements": ["HTML/CSS", "JavaScript", "React basics", "Git"],
+    "postedDate": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "title": "Backend Developer Intern",
+    "company": "DataFlow Systems",
+    "location": "Mumbai, India",
+    "duration": "6 months",
+    "stipend": "$2500/month",
+    "description": "Work on server-side development using Node.js, Express, and MongoDB. Learn about API development and database design.",
+    "requirements": ["JavaScript", "Node.js", "Express", "MongoDB", "Git"],
+    "postedDate": "2024-01-10"
+  },
+  {
+    "id": 3,
+    "title": "UI/UX Design Intern",
+    "company": "Creative Studios",
+    "location": "Bangalore, India",
+    "duration": "4 months",
+    "stipend": "$1800/month",
+    "description": "Create beautiful user interfaces and user experiences. Work with Figma, Adobe Creative Suite, and design systems.",
+    "requirements": ["Figma", "Adobe Creative Suite", "Design principles", "Prototyping"],
+    "postedDate": "2024-01-12"
+  },
+  {
+    "id": 4,
+    "title": "Data Science Intern",
+    "company": "Analytics Pro",
+    "location": "Hyderabad, India",
+    "duration": "5 months",
+    "stipend": "$3000/month",
+    "description": "Analyze large datasets, build machine learning models, and create data visualizations using Python and related libraries.",
+    "requirements": ["Python", "Pandas", "NumPy", "Matplotlib", "SQL"],
+    "postedDate": "2024-01-08"
+  },
+  {
+    "id": 5,
+    "title": "Mobile App Developer Intern",
+    "company": "AppWorks",
+    "location": "Delhi, India",
+    "duration": "4 months",
+    "stipend": "$2200/month",
+    "description": "Develop mobile applications for iOS and Android using React Native or Flutter. Learn mobile app development best practices.",
+    "requirements": ["JavaScript", "React Native/Flutter", "Mobile development", "Git"],
+    "postedDate": "2024-01-14"
+  }
+] 

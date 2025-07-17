@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1,
+    "name": "Recruiter",
+    "email": "hr@123",
+    "password": "12345",
+    "company": "hr",
+    "createdAt": "2025-07-14T06:45:28.375Z"
+  }
+]
